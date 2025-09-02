@@ -1,0 +1,25 @@
+{
+  "apiEndpoint": "https://yggdrasil.harmoniya.net/privileges",
+  "httpTimeout": 5000,
+  "debugMode": false,
+  "strictIpValidation": true,
+  "messages": {
+    "successLogin": "<gradient:green:aqua>Ви автоматично увійшли в гру за допомогою лаунчеру!</gradient>",
+    "successTitle": "<gradient:gold:yellow>Успішно увійшли!</gradient>",
+    "successSubtitle": "<gray>Через Harmoniya Launcher</gray>",
+    "ipMismatch": "<gradient:red:dark_red>Ваша IP-адреса не співпадає з IP-адресою, з якої ви востаннє увійшли в гру!</gradient>",
+    "manualLoginRequired": "<gradient:orange:red>Щоб продовжити, ви маєте увійти власноруч, для підтвердження особистості гравця!</gradient>",
+    "launcherReminder": "<green>Нагадуємо, що у нашого серверу є власний зручний лаунчер</green> <click:open_url:'https://harmoniya.net/'><underlined><aqua>Harmoniya (тицни на мене)!</aqua></underlined></click>",
+    "configReloaded": "<gradient:green:lime>Конфігурацію перезавантажено!</gradient>",
+    "noPermission": "<red>У вас немає дозволу на використання цієї команди!</red>",
+    "statusOnline": "<gradient:green:lime>✓ Harmoniya Handshake працює нормально</gradient>",
+    "statusApiEndpoint": "<gray>API Endpoint: </gray><white>%s</white>",
+    "statusTimeout": "<gray>HTTP Timeout: </gray><white>%d мс</white>",
+    "statusDebugMode": "<gray>Debug Mode: </gray><white>%s</white>",
+    "debugPlayerNotFound": "<red>Гравця не знайдено!</red>",
+    "debugPlayerInfo": "<gradient:blue:cyan>Інформація про гравця %s:</gradient>",
+    "debugCurrentIp": "<gray>Поточна IP: </gray><white>%s</white>",
+    "debugLastIp": "<gray>Остання IP: </gray><white>%s</white>",
+    "debugIpMatch": "<gray>IP співпадає: </gray><white>%s</white>"
+  }
+}
