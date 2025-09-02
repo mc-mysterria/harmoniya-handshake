@@ -20,6 +20,12 @@
     "debugPlayerInfo": "<gradient:blue:cyan>Інформація про гравця %s:</gradient>",
     "debugCurrentIp": "<gray>Поточна IP: </gray><white>%s</white>",
     "debugLastIp": "<gray>Остання IP: </gray><white>%s</white>",
-    "debugIpMatch": "<gray>IP співпадає: </gray><white>%s</white>"
+    "debugIpMatch": "<gray>IP співпадає: </gray><white>%s</white>",
+    "accountCreated": "<gradient:green:lime>🎉 Вітаємо на сервері! Для вас було створено новий акаунт!</gradient>",
+    "accountCreatedTitle": "<gradient:gold:green>🎉 Акаунт створено!</gradient>",
+    "accountCreatedSubtitle": "<gray>Збережіть ваш пароль в безпечному місці</gray>",
+    "accountPassword": "<gradient:yellow:orange>📋 Ваш згенерований пароль: </gradient><white><bold>%s</bold></white>",
+    "accountPasswordSave": "<gradient:red:orange>⚠️ ВАЖЛИВО: Збережіть цей пароль! Він не буде показаний знову!</gradient>",
+    "accountBossbarMessage": "🔐 ЗБЕРЕЖІТЬ ПАРОЛЬ: %s"
   }
 }

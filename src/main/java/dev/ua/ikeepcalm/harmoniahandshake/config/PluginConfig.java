@@ -32,5 +32,12 @@ public class PluginConfig {
         public String debugCurrentIp = "<gray>Поточна IP: </gray><white>%s</white>";
         public String debugLastIp = "<gray>Остання IP: </gray><white>%s</white>";
         public String debugIpMatch = "<gray>IP співпадає: </gray><white>%s</white>";
+        
+        public String accountCreated = "<gradient:green:lime>🎉 Вітаємо на сервері! Для вас було створено новий акаунт!</gradient>";
+        public String accountCreatedTitle = "<gradient:gold:green>🎉 Акаунт створено!</gradient>";
+        public String accountCreatedSubtitle = "<gray>Збережіть ваш пароль в безпечному місці</gray>";
+        public String accountPassword = "<gradient:yellow:orange>📋 Ваш згенерований пароль: </gradient><white><bold>%s</bold></white>";
+        public String accountPasswordSave = "<gradient:red:orange>⚠️ ВАЖЛИВО: Збережіть цей пароль! Він не буде показаний знову!</gradient>";
+        public String accountBossbarMessage = "🔐 ЗБЕРЕЖІТЬ ПАРОЛЬ: %s";
     }
 }
