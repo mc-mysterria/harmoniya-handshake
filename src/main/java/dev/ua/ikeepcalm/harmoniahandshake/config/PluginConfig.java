@@ -17,7 +17,7 @@ public class PluginConfig {
         public String ipMismatch = "<gradient:red:dark_red>Ваша IP-адреса не співпадає з IP-адресою, з якої ви востаннє увійшли в гру!</gradient>";
         public String manualLoginRequired = "<gradient:orange:red>Щоб продовжити, ви маєте увійти власноруч, для підтвердження особистості гравця!</gradient>";
         
-        public String launcherReminder = "<green>Нагадуємо, що у нашого серверу є власний зручний лаунчер</green> <click:open_url:'https://harmoniya.net/'><underlined><aqua>Harmoniya (тицни на мене)!</aqua></underlined></click>";
+        public String launcherReminder = "<green>Нагадуємо, що ви можете грати через лаунчер наших партнерів з модами:</green> <click:open_url:'https://harmoniya.net/'><underlined><aqua>Harmoniya (тицни на мене)!</aqua></underlined></click>";
         
         public String configReloaded = "<gradient:green:lime>Конфігурацію перезавантажено!</gradient>";
         public String noPermission = "<red>У вас немає дозволу на використання цієї команди!</red>";

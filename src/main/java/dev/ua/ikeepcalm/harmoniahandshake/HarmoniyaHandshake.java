@@ -33,6 +33,7 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,6 +52,7 @@ public class HarmoniyaHandshake {
     private final Map<UUID, Instant> lastHandshakeAttempt = new ConcurrentHashMap<>();
 
     private static final Duration HANDSHAKE_COOLDOWN = Duration.ofSeconds(3);
+    private static final Set<String> LAUNCHER_REMINDER_LANGUAGES = Set.of("uk", "ru");
     public static final MinecraftChannelIdentifier IDENTIFIER = MinecraftChannelIdentifier.from("harmoniyabridge:handshake");
 
     @Inject
@@ -227,8 +229,19 @@ public class HarmoniyaHandshake {
     }
     
     private void sendLauncherReminder(Player player) {
+        if (!isUkrainianOrRussianLocale(player)) {
+            debugLog("Skipping launcher reminder for player {} - locale is not Ukrainian/Russian", player.getUsername());
+            return;
+        }
         var message = configManager.getConfig().messages.launcherReminder;
         player.sendMessage(miniMessage.deserialize(message));
+    }
+
+    private boolean isUkrainianOrRussianLocale(Player player) {
+        if (!player.hasSentPlayerSettings()) {
+            return true;
+        }
+        return LAUNCHER_REMINDER_LANGUAGES.contains(player.getPlayerSettings().getLocale().getLanguage());
     }
     
     public void debugLog(String message, Object... args) {

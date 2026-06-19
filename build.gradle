@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'dev.ua.ikeepcalm'
-version = '1.0.0'
+version = '1.1.0'
 
 repositories {
     mavenCentral()
@@ -45,6 +45,7 @@ java {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release.set(targetJavaVersion)
+    options.compilerArgs += ['-Xlint:deprecation']
 }
 
 def templateSource = file('src/main/templates')
