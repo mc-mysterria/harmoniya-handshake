@@ -1,5 +1,5 @@
 {
-  "apiEndpoint": "https://yggdrasil.harmoniya.net/privileges",
+  "apiEndpoint": "https://bifrost.harmoniya.net/privileges",
   "httpTimeout": 5000,
   "debugMode": false,
   "strictIpValidation": true,
@@ -21,11 +21,22 @@
     "debugCurrentIp": "<gray>Поточна IP: </gray><white>%s</white>",
     "debugLastIp": "<gray>Остання IP: </gray><white>%s</white>",
     "debugIpMatch": "<gray>IP співпадає: </gray><white>%s</white>",
+    "debugAccountNotFound": "<red>Акаунт не знайдено в nLogin</red>",
     "accountCreated": "<gradient:green:lime>🎉 Вітаємо на сервері! Для вас було створено новий акаунт!</gradient>",
     "accountCreatedTitle": "<gradient:gold:green>🎉 Акаунт створено!</gradient>",
     "accountCreatedSubtitle": "<gray>Збережіть ваш пароль в безпечному місці</gray>",
-    "accountPassword": "<gradient:yellow:orange>📋 Ваш згенерований пароль: </gradient><white><bold>%s</bold></white>",
+    "accountPassword": "<gradient:yellow:orange>📋 Ваш згенерований пароль: </gradient><click:copy_to_clipboard:'%1$s'><white><bold><underlined>%1$s</underlined></bold></white></click> <gray>(тицни щоб скопіювати)</gray>",
     "accountPasswordSave": "<gradient:red:orange>⚠️ ВАЖЛИВО: Збережіть цей пароль! Він не буде показаний знову!</gradient>",
-    "accountBossbarMessage": "🔐 ЗБЕРЕЖІТЬ ПАРОЛЬ: %s"
+    "accountBossbarMessage": "<gradient:gold:yellow>🔐 ЗБЕРЕЖІТЬ ПАРОЛЬ: %s</gradient>",
+    "accountPasswordBookTitle": "Пароль від акаунту",
+    "accountPasswordBookAuthor": "Harmoniya",
+    "accountPasswordBookPage": "<gold><bold>Вітаємо на Harmoniya!</bold></gold>\n\n<gray>Для вас було автоматично створено акаунт.</gray>\n\n<yellow>Ваш пароль:</yellow>\n<click:copy_to_clipboard:'%1$s'><white><bold>%1$s</bold></white></click>\n\n<red>Збережіть цей пароль! Він НЕ буде показаний знову.</red>",
+    "commandHelpHeader": "<gradient:gold:yellow>Harmoniya Handshake Commands:</gradient>",
+    "commandHelpReload": "<gray>• </gray><white>/harmoniya reload</white> <gray>- Перезавантажити конфігурацію</gray>",
+    "commandHelpStatus": "<gray>• </gray><white>/harmoniya status</white> <gray>- Показати статус плагіна</gray>",
+    "commandHelpDebug": "<gray>• </gray><white>/harmoniya debug <гравець></white> <gray>- Відлагодження для гравця</gray>",
+    "commandDebugUsage": "<red>Використання: /harmoniya debug <гравець></red>",
+    "commandReloadError": "<red>Помилка при перезавантаженні конфігурації: %s</red>",
+    "statusPlayersOnline": "<gray>Гравців онлайн: </gray><white>%d</white>"
   }
 }

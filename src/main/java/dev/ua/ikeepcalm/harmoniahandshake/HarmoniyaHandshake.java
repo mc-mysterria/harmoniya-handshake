@@ -5,8 +5,10 @@ import com.nickuc.login.api.nLoginAPI;
 import com.nickuc.login.api.types.AccountData;
 import com.nickuc.login.api.types.Identity;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.Player;
@@ -16,6 +18,9 @@ import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import dev.ua.ikeepcalm.harmoniahandshake.commands.HarmoniyaCommand;
 import dev.ua.ikeepcalm.harmoniahandshake.config.ConfigManager;
 import dev.ua.ikeepcalm.harmoniahandshake.service.HttpService;
+import net.kyori.adventure.inventory.Book;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -26,7 +31,11 @@ import java.io.*;
 import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 @Plugin(id = "harmoniyahandshake", name = "HarmoniyaHandshake", version = "1.0.0")
@@ -39,7 +48,9 @@ public class HarmoniyaHandshake {
     private final MiniMessage miniMessage;
     private final ConsoleCommandSource console;
     private final SecureRandom random;
-    
+    private final Map<UUID, Instant> lastHandshakeAttempt = new ConcurrentHashMap<>();
+
+    private static final Duration HANDSHAKE_COOLDOWN = Duration.ofSeconds(3);
     public static final MinecraftChannelIdentifier IDENTIFIER = MinecraftChannelIdentifier.from("harmoniyabridge:handshake");
 
     @Inject
@@ -69,11 +80,30 @@ public class HarmoniyaHandshake {
     }
 
     @Subscribe
+    public void onProxyShutdown(ProxyShutdownEvent event) {
+        server.getChannelRegistrar().unregister(IDENTIFIER);
+        httpService.shutdown();
+        logger.info("HarmoniyaHandshake has been shut down");
+    }
+
+    @Subscribe
+    public void onPlayerDisconnect(DisconnectEvent event) {
+        lastHandshakeAttempt.remove(event.getPlayer().getUniqueId());
+    }
+
+    @Subscribe
     public void onPluginMessageFromPlayer(PluginMessageEvent event) {
         if (!(event.getSource() instanceof Player player)) {
             return;
         }
         if (!event.getIdentifier().equals(IDENTIFIER)) {
+            return;
+        }
+
+        Instant now = Instant.now();
+        Instant previousAttempt = lastHandshakeAttempt.put(player.getUniqueId(), now);
+        if (previousAttempt != null && now.isBefore(previousAttempt.plus(HANDSHAKE_COOLDOWN))) {
+            debugLog("Ignoring repeated handshake from player {} within cooldown window", player.getUsername());
             return;
         }
 
@@ -237,30 +267,38 @@ public class HarmoniyaHandshake {
     
     private void notifyAccountCreation(Player player, String password) {
         var messages = configManager.getConfig().messages;
-        
+
         player.sendMessage(miniMessage.deserialize(messages.accountCreated));
         player.sendMessage(miniMessage.deserialize(String.format(messages.accountPassword, password)));
         player.sendMessage(miniMessage.deserialize(messages.accountPasswordSave));
-        
+
+        player.playSound(Sound.sound(Key.key("block.note_block.bell"), Sound.Source.MASTER, 1f, 1f));
+
         Title title = Title.title(
             miniMessage.deserialize(messages.accountCreatedTitle),
             miniMessage.deserialize(messages.accountCreatedSubtitle),
             Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(5), Duration.ofSeconds(1))
         );
         player.showTitle(title);
-        
+
         BossBar bossBar = BossBar.bossBar(
-            Component.text(String.format(messages.accountBossbarMessage, password)),
+            miniMessage.deserialize(String.format(messages.accountBossbarMessage, password)),
             1.0f,
             BossBar.Color.YELLOW,
             BossBar.Overlay.PROGRESS
         );
-        
+
         player.showBossBar(bossBar);
-        
-        server.getScheduler().buildTask(this, () -> {
-            player.hideBossBar(bossBar);
-        }).delay(30, TimeUnit.SECONDS).schedule();
+
+        player.openBook(Book.book(
+            miniMessage.deserialize(messages.accountPasswordBookTitle),
+            miniMessage.deserialize(messages.accountPasswordBookAuthor),
+            miniMessage.deserialize(String.format(messages.accountPasswordBookPage, password))
+        ));
+
+        server.getScheduler().buildTask(this, () -> player.hideBossBar(bossBar))
+            .delay(45, TimeUnit.SECONDS)
+            .schedule();
     }
     
     private String generateRandomPassword() {

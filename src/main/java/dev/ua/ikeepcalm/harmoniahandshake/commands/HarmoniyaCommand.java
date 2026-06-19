@@ -63,7 +63,9 @@ public class HarmoniyaCommand implements SimpleCommand {
                     return;
                 }
                 if (args.length < 2) {
-                    source.sendMessage(miniMessage.deserialize("<red>Використання: /harmoniya debug <гравець></red>"));
+                    source.sendMessage(miniMessage.deserialize(
+                            plugin.getConfigManager().getConfig().messages.commandDebugUsage
+                    ));
                     return;
                 }
                 debugPlayer(source, args[1]);
@@ -93,10 +95,11 @@ public class HarmoniyaCommand implements SimpleCommand {
     }
 
     private void showHelp(CommandSource source) {
-        source.sendMessage(miniMessage.deserialize("<gradient:gold:yellow>Harmoniya Handshake Commands:</gradient>"));
-        source.sendMessage(miniMessage.deserialize("<gray>• </gray><white>/harmoniya reload</white> <gray>- Перезавантажити конфігурацію</gray>"));
-        source.sendMessage(miniMessage.deserialize("<gray>• </gray><white>/harmoniya status</white> <gray>- Показати статус плагіна</gray>"));
-        source.sendMessage(miniMessage.deserialize("<gray>• </gray><white>/harmoniya debug <гравець></white> <gray>- Відлагодження для гравця</gray>"));
+        var messages = plugin.getConfigManager().getConfig().messages;
+        source.sendMessage(miniMessage.deserialize(messages.commandHelpHeader));
+        source.sendMessage(miniMessage.deserialize(messages.commandHelpReload));
+        source.sendMessage(miniMessage.deserialize(messages.commandHelpStatus));
+        source.sendMessage(miniMessage.deserialize(messages.commandHelpDebug));
     }
 
     private void reloadConfig(CommandSource source) {
@@ -108,7 +111,7 @@ public class HarmoniyaCommand implements SimpleCommand {
                 ));
             } catch (IOException e) {
                 source.sendMessage(miniMessage.deserialize(
-                        "<red>Помилка при перезавантаженні конфігурації: " + e.getMessage() + "</red>"
+                        String.format(plugin.getConfigManager().getConfig().messages.commandReloadError, e.getMessage())
                 ));
                 plugin.getLogger().error("Failed to reload configuration", e);
             }
@@ -125,7 +128,7 @@ public class HarmoniyaCommand implements SimpleCommand {
         source.sendMessage(miniMessage.deserialize(String.format(messages.statusDebugMode, config.debugMode ? "Увімкнено" : "Вимкнено")));
 
         long playersOnline = server.getAllPlayers().size();
-        source.sendMessage(miniMessage.deserialize("<gray>Гравців онлайн: </gray><white>" + playersOnline + "</white>"));
+        source.sendMessage(miniMessage.deserialize(String.format(messages.statusPlayersOnline, playersOnline)));
     }
 
     private void debugPlayer(CommandSource source, String playerName) {
@@ -148,7 +151,7 @@ public class HarmoniyaCommand implements SimpleCommand {
                     boolean ipMatches = plugin.getHttpService().checkIPMatch(currentIP, lastIP);
                     source.sendMessage(miniMessage.deserialize(String.format(messages.debugIpMatch, ipMatches ? "Так" : "Ні")));
                 } else {
-                    source.sendMessage(miniMessage.deserialize("<red>Акаунт не знайдено в nLogin</red>"));
+                    source.sendMessage(miniMessage.deserialize(messages.debugAccountNotFound));
                 }
             });
         }, () -> {
